@@ -17,8 +17,8 @@ var states = {
 
 
 // Questions
-var nodes = [{ "node": 1, "message": "You're sitting on the space port dock, preparing for take off. You hear a long clang from behind you. Do you want to take off now?", "yes": 2, "no": 3 },
-             { "node": 2, "message": "T", "yes": 4, "no": 5 },
+var nodes = [{ "node": 1, "message": "Do you like working with people", "yes": 2, "no": 3 },
+             { "node": 2, "message": "Do you like caring for others", "yes": 4, "no": 5 },
              { "node": 3, "message": "Would you like to work during the day", "yes": 6, "no": 7 },
              { "node": 4, "message": "Can you stand the sight of blood", "yes": 8, "no": 9 },
              { "node": 5, "message": "Is money the most important thing in your life", "yes": 10, "no": 11 },
