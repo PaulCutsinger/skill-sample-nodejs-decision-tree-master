@@ -2,7 +2,7 @@
  * This sample demonstrates a simple skill built with the Amazon Alexa Skills Kit.
  * The Intent Schema, Custom Slots, and Sample Utterances for this skill, as well as
  * testing instructions are located at http://amzn.to/1LzFrj6
- *
+ * 
  * For additional samples, visit the Alexa Skills Kit Getting Started guide at
  * http://amzn.to/1LGWsLG
  */
@@ -42,7 +42,7 @@ var visited = [nodes.length];
 
 // These are messages that Alexa says to the user during conversation
 
-// This is the intial welcome message 
+// This is the intial welcome message
 var welcomeMessage = "Enter message here";
 
 // This is the message that is repeated if the response to the initial welcome message is not heard
@@ -79,7 +79,7 @@ var utteranceTellMeMore = "Enter utterance here";
 var utterancePlayAgain = "Enter utterance here";
 
 // the first node that we will use
-var START_NODE = 1;  
+var START_NODE = 1;
 
 // --------------- Handlers -----------------------
 
@@ -93,7 +93,7 @@ exports.handler = function (event, context, callback) {
 // set state to start up and  welcome the user
 var newSessionHandler = {
     'NewSession': function () {
-        this.handler.state = states.STARTMODE;                         
+        this.handler.state = states.STARTMODE;
         this.emit(':ask', welcomeMessage, repeatWelcomeMessage);
     }
 };
@@ -110,8 +110,8 @@ var startGameHandlers = Alexa.CreateStateHandler(states.STARTMODE, {
         var loopFound = helper.debugFunction_walkNode(START_NODE);
         if( loopFound === true)
         {
-             this.emit(':tell', loopsDetectedMessage); 
-        } 
+             this.emit(':tell', loopsDetectedMessage);
+        }
         // ---------------------------------------------------------------
 
         // set state to asking questions
@@ -133,6 +133,9 @@ var startGameHandlers = Alexa.CreateStateHandler(states.STARTMODE, {
     'AMAZON.StopIntent': function () {
         this.emit(':tell', goodbyeMessage);
     },
+    'AMAZON.CancelIntent': function () {
+        this.emit(':tell', goodbyeMessage);
+    },
     'AMAZON.StartOverIntent': function () {
          this.emit(':ask', promptToStartMessage, promptToStartMessage);
     },
@@ -145,9 +148,9 @@ var startGameHandlers = Alexa.CreateStateHandler(states.STARTMODE, {
 });
 
 
-// user will have been asked a question when this intent is called. We want to look at their yes/no 
-// response and then ask another question. If we have asked more than the requested number of questions Alexa will 
-// make a choice, inform the user and then ask if they want to play again 
+// user will have been asked a question when this intent is called. We want to look at their yes/no
+// response and then ask another question. If we have asked more than the requested number of questions Alexa will
+// make a choice, inform the user and then ask if they want to play again
 var askQuestionHandlers = Alexa.CreateStateHandler(states.ASKMODE, {
 
     'AMAZON.YesIntent': function () {
@@ -163,11 +166,14 @@ var askQuestionHandlers = Alexa.CreateStateHandler(states.ASKMODE, {
     },
     'AMAZON.StopIntent': function () {
         this.emit(':tell', goodbyeMessage);
-    }, 
+    },
+    'AMAZON.CancelIntent': function () {
+        this.emit(':tell', goodbyeMessage);
+    },
     'AMAZON.StartOverIntent': function () {
         // reset the game state to start mode
-        this.handler.state = states.STARTMODE;     
-        this.emit(':ask', welcomeMessage, repeatWelcomeMessage);                     
+        this.handler.state = states.STARTMODE;
+        this.emit(':ask', welcomeMessage, repeatWelcomeMessage);
     },
     'Unhandled': function () {
         this.emit(':ask', promptToSayYesNo, promptToSayYesNo);
@@ -180,8 +186,8 @@ var descriptionHandlers = Alexa.CreateStateHandler(states.DESCRIPTIONMODE, {
  'AMAZON.YesIntent': function () {
         // Handle Yes intent.
         // reset the game state to start mode
-        this.handler.state = states.STARTMODE;     
-        this.emit(':ask', welcomeMessage, repeatWelcomeMessage);   
+        this.handler.state = states.STARTMODE;
+        this.emit(':ask', welcomeMessage, repeatWelcomeMessage);
     },
     'AMAZON.NoIntent': function () {
         // Handle No intent.
@@ -192,29 +198,32 @@ var descriptionHandlers = Alexa.CreateStateHandler(states.DESCRIPTIONMODE, {
     },
     'AMAZON.StopIntent': function () {
         this.emit(':tell', goodbyeMessage);
-    }, 
+    },
+    'AMAZON.CancelIntent': function () {
+        this.emit(':tell', goodbyeMessage);
+    },
     'AMAZON.StartOverIntent': function () {
         // reset the game state to start mode
-        this.handler.state = states.STARTMODE;     
-        this.emit(':ask', welcomeMessage, repeatWelcomeMessage);                     
+        this.handler.state = states.STARTMODE;
+        this.emit(':ask', welcomeMessage, repeatWelcomeMessage);
     },
     'DescriptionIntent': function () {
-        var reply = this.event.request.intent.slots.Description.value; 
+        var reply = this.event.request.intent.slots.Description.value;
         console.log('HEARD:' + reply);
 
         if( reply === utteranceTellMeMore){
             helper.giveDescription(this);
         } else if( reply === utterancePlayAgain) {
             // reset the game state to start mode
-            this.handler.state = states.STARTMODE;     
-            this.emit(':ask', welcomeMessage, repeatWelcomeMessage);                 
+            this.handler.state = states.STARTMODE;
+            this.emit(':ask', welcomeMessage, repeatWelcomeMessage);
         } else {
-             this.emit(':ask', playAgainMessage, playAgainMessage);   
-        } 
+             this.emit(':ask', playAgainMessage, playAgainMessage);
+        }
     },
     'Unhandled': function () {
         this.emit(':ask', promptToSayYesNo, promptToSayYesNo);
-    }    
+    }
 });
 
 // --------------- Helper Functions  -----------------------
@@ -223,12 +232,12 @@ var helper = {
 
     // gives the user more information on their final choice
     giveDescription: function (context) {
-    
+
         // get the speech for the child node
         var description = helper.getDescriptionForNode(context.attributes.currentNode);
         var message = description + ', ' + repeatWelcomeMessage;
 
-        context.emit(':ask', message, message);  
+        context.emit(':ask', message, message);
     },
 
     // logic to provide the responses to the yes or no responses to the main questions
@@ -254,21 +263,21 @@ var helper = {
         if (helper.isAnswerNode(nextNodeId) === true) {
 
             // set the game state to description mode
-            context.handler.state = states.DESCRIPTIONMODE;                          
+            context.handler.state = states.DESCRIPTIONMODE;
 
             // append the play again prompt to the decision and speak it
             message = decisionMessage + ' ' + message + ' ,' + playAgainMessage;
         }
-        
+
         // set the current node to next node we want to go to
         context.attributes.currentNode = nextNodeId;
 
-        context.emit(':ask', message, message);  
-    },  
+        context.emit(':ask', message, message);
+    },
 
     // gets the description for the given node id
     getDescriptionForNode: function (nodeId) {
-     
+
         for (var i = 0; i < nodes.length; i++) {
             if (nodes[i].node == nodeId) {
                 return nodes[i].description;
@@ -279,7 +288,7 @@ var helper = {
 
     // returns the speech for the provided node id
     getSpeechForNode: function (nodeId) {
-     
+
         for (var i = 0; i < nodes.length; i++) {
             if (nodes[i].node == nodeId) {
                 return nodes[i].message;
@@ -290,12 +299,12 @@ var helper = {
 
     // checks to see if this node is an choice node or a decision node
     isAnswerNode: function (nodeId) {
-     
+
         for (var i = 0; i < nodes.length; i++) {
             if (nodes[i].node == nodeId) {
                 if (nodes[i].yes === 0 && nodes[i].no === 0) {
                     return true;
-                } 
+                }
             }
         }
         return false;
@@ -324,10 +333,10 @@ var helper = {
         // console.log("Walking node: " + nodeId);
 
         if( helper.isAnswerNode(nodeId) === true) {
-            // found an answer node - this path to this node does not contain a previously visted node 
+            // found an answer node - this path to this node does not contain a previously visted node
             // so we will return without recursing further
-            
-            // console.log("Answer node found"); 
+
+            // console.log("Answer node found");
              return false;
         }
 
@@ -335,23 +344,23 @@ var helper = {
         if( helper.debugFunction_AddToVisited(nodeId) === false)
         {
             // node was not added to the visited list as it already exists, this indicates a duplicate path in the tree
-            return true;     
+            return true;
         }
 
-        // console.log("Recursing yes path"); 
+        // console.log("Recursing yes path");
         var yesNode = helper.getNextNode(nodeId, "yes");
-        var duplicatePathHit = helper.debugFunction_walkNode(yesNode);     
+        var duplicatePathHit = helper.debugFunction_walkNode(yesNode);
 
         if( duplicatePathHit === true){
-            return true;        
+            return true;
         }
 
-        // console.log("Recursing no"); 
+        // console.log("Recursing no");
         var noNode = helper.getNextNode(nodeId, "no");
-        duplicatePathHit = helper.debugFunction_walkNode(noNode);     
+        duplicatePathHit = helper.debugFunction_walkNode(noNode);
 
         if( duplicatePathHit === true){
-            return true;        
+            return true;
         }
 
         // the paths below this node returned no duplicates
@@ -362,10 +371,10 @@ var helper = {
     // if it has it will be set to 1 in the array and we return false (exists)
     // if it hasnt we set it to 1 and return true (added)
     debugFunction_AddToVisited: function (nodeId) {
-     
+
         if (visited[nodeId] === 1) {
             // node previously added - duplicate exists
-            // console.log("Node was previously visited - duplicate detected"); 
+            // console.log("Node was previously visited - duplicate detected");
             return false;
         }
 

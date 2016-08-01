@@ -1,4 +1,8 @@
-DescriptionIntent {Description}
+DescriptionIntent {Description} please
+DescriptionIntent please {Description}
+DescriptionIntent {Description} 
+DescriptionIntent tell me about that
+DescriptionIntent description please
 AMAZON.StopIntent stop
 AMAZON.StopIntent off
 AMAZON.StopIntent shut up

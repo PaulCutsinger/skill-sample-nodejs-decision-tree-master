@@ -132,6 +132,9 @@ var startGameHandlers = Alexa.CreateStateHandler(states.STARTMODE, {
     'AMAZON.StopIntent': function () {
         this.emit(':tell', goodbyeMessage);
     },
+    'AMAZON.CancelIntent': function () {
+        this.emit(':tell', goodbyeMessage);
+    },
     'AMAZON.StartOverIntent': function () {
          this.emit(':ask', promptToStartMessage, promptToStartMessage);
     },
@@ -163,6 +166,9 @@ var askQuestionHandlers = Alexa.CreateStateHandler(states.ASKMODE, {
     'AMAZON.StopIntent': function () {
         this.emit(':tell', goodbyeMessage);
     },
+    'AMAZON.CancelIntent': function () {
+        this.emit(':tell', goodbyeMessage);
+    },
     'AMAZON.StartOverIntent': function () {
         // reset the game state to start mode
         this.handler.state = states.STARTMODE;
@@ -190,6 +196,9 @@ var descriptionHandlers = Alexa.CreateStateHandler(states.DESCRIPTIONMODE, {
         this.emit(':ask', promptToSayYesNo, promptToSayYesNo);
     },
     'AMAZON.StopIntent': function () {
+        this.emit(':tell', goodbyeMessage);
+    },
+    'AMAZON.CancelIntent': function () {
         this.emit(':tell', goodbyeMessage);
     },
     'AMAZON.StartOverIntent': function () {

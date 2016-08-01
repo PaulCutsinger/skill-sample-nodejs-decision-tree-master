@@ -12,6 +12,9 @@
 		"intent": "AMAZON.StopIntent",
 		"slots": []
 	}, {
+		"intent": "AMAZON.CancelIntent",
+		"slots": []
+	},{
 		"intent": "AMAZON.StartOverIntent",
 		"slots": []
 	}, {
